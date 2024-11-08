@@ -1,13 +1,12 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { isAuthenticated, logout } from './auth';
 
-const isAuthenticated = ref(localStorage.getItem('authenticated') === 'true');
 const router = useRouter();
 
-const logout = () => {
-  localStorage.removeItem('authenticated');
-  isAuthenticated.value = false;
+const handleLogout = () => {
+  logout();
   router.push('/admin-login');
 };
 </script>
@@ -15,9 +14,9 @@ const logout = () => {
 <template>
   <div>
     <nav>
-      <router-link v-if="isAuthenticated" to="/orders">Orders</router-link>
-      <router-link to="/admin-login">Admin Login</router-link>
-      <button v-if="isAuthenticated" @click="logout">Logout</button>
+      <router-link v-if="isAuthenticated" to="/orders"></router-link>
+      <router-link v-if="!isAuthenticated" to="/admin-login"></router-link>
+      <button v-if="isAuthenticated" @click="handleLogout">Logout</button>
     </nav>
     <router-view></router-view> <!-- This is where the routed components will be rendered -->
   </div>
