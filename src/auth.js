@@ -1,13 +1,13 @@
-import { ref } from 'vue';
+import { reactive } from 'vue';
 
-export const isAuthenticated = ref(localStorage.getItem('authenticated') === 'true');
+export const authState = reactive({
+  isAuth: !!localStorage.getItem('authToken')
+});
 
-export const login = () => {
-  localStorage.setItem('authenticated', 'true');
-  isAuthenticated.value = true;
-};
+export function updateAuthStatus() {
+  authState.isAuth = !!localStorage.getItem('authToken');
+}
 
-export const logout = () => {
-  localStorage.removeItem('authenticated');
-  isAuthenticated.value = false;
-};
+export function getRedirectRoute() {
+  return authState.isAuth ? '/orders' : '/login';
+}
