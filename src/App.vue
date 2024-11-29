@@ -19,8 +19,8 @@ onMounted(() => {
 <template>
   <div>
     <nav>
-      <router-link v-if="authState.isAuth" to="/orders">Orders</router-link>
-      <router-link v-if="!authState.isAuth" to="/login">Login</router-link>
+      <router-link v-if="authState.isAuth" to="/orders"></router-link>
+      <router-link v-if="!authState.isAuth" to="/login"></router-link>
       <button v-if="authState.isAuth" @click="handleUserLogout">Logout</button>
     </nav>
     <router-view></router-view> <!-- This is where the routed components will be rendered -->
