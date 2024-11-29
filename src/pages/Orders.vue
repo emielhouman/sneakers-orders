@@ -2,21 +2,36 @@
 import { ref, computed, onMounted } from 'vue';
 
 const orders = ref([]);
+const totalOrders = ref(0); // Live counter for total orders
 const searchQuery = ref('');
 const selectedFilter = ref(''); // Default is no filter (show all)
 const statuses = ['Pending', 'Shipped', 'Cancelled', 'Completed'];
 
-// Fetch orders on component mount
+// Function to fetch orders from the API
+const fetchOrders = async () => {
+  try {
+    const response = await fetch('https://sneakers-api-ouat.onrender.com/api/v1/orders');
+    const data = await response.json();
+    orders.value = data.data.orders.map((order) => ({
+      ...order,
+      status: order.status || 'Pending', // Default status to 'Pending'
+      texture: order.texture || 'N/A', // Default texture if missing
+      image: order.image || '', // Default empty image if missing
+    }));
+    totalOrders.value = orders.value.length; // Update total orders
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+  }
+};
+
+// Automatically fetch data on component mount and periodically
 onMounted(() => {
-  fetch('https://sneakers-api-ouat.onrender.com/api/v1/orders')
-    .then((response) => response.json())
-    .then((data) => {
-      orders.value = data.data.orders.map((order) => ({
-        ...order,
-        status: order.status || 'Pending', // Default status to 'Pending'
-      }));
-    })
-    .catch((error) => console.error('Error fetching orders:', error));
+  fetchOrders();
+
+  // Optional polling to refresh data periodically (e.g., every 10 seconds)
+  setInterval(() => {
+    fetchOrders();
+  }, 10000); // Adjust the interval as needed
 });
 
 // Filtered and searched orders
@@ -26,7 +41,9 @@ const filteredOrders = computed(() => {
       order._id.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       order.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       order.size.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      order.color.toLowerCase().includes(searchQuery.value.toLowerCase());
+      order.color.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      order.texture.toLowerCase().includes(searchQuery.value.toLowerCase());
+
 
     const matchesFilter = selectedFilter.value
       ? order.status === selectedFilter.value
@@ -40,6 +57,20 @@ const filteredOrders = computed(() => {
 const updateStatus = (order, newStatus) => {
   order.status = newStatus;
   console.log(`Order ${order._id} status updated to: ${newStatus}`);
+};
+
+// Delete an order
+const deleteOrder = async (orderId) => {
+  try {
+    await fetch(`https://sneakers-api-ouat.onrender.com/api/v1/orders/${orderId}`, {
+      method: 'DELETE',
+    });
+    orders.value = orders.value.filter((order) => order._id !== orderId);
+    totalOrders.value -= 1; // Decrement the total order counter
+    console.log(`Order ${orderId} has been deleted`);
+  } catch (error) {
+    console.error(`Failed to delete order ${orderId}:`, error);
+  }
 };
 
 // Get the color class for the status
@@ -63,14 +94,17 @@ const getStatusColor = (status) => {
   <div class="order-page">
     <h1>O R D E R S</h1>
 
-  
+    <!-- Live Counter -->
+    <div class="live-counter">
+      <p>Total Orders: <strong>{{ totalOrders }}</strong></p>
+    </div>
 
     <!-- Search and Filter -->
     <div class="filter-search-container">
       <input
         v-model="searchQuery"
         type="text"
-        placeholder="Search by Order ID, Name, Size, or Color"
+        placeholder="Search by Order ID, Name, Size, Color, etc."
         class="search-input"
       />
       <select v-model="selectedFilter" class="filter-dropdown">
@@ -90,7 +124,10 @@ const getStatusColor = (status) => {
             <th>Name</th>
             <th>Size</th>
             <th>Color</th>
+            <th>Texture</th>
+            <th>Image</th>
             <th>Order Status</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -99,6 +136,11 @@ const getStatusColor = (status) => {
             <td>{{ order.name }}</td>
             <td>{{ order.size }}</td>
             <td>{{ order.color }}</td>
+            <td>{{ order.texture }}</td>
+            <td>
+              <img v-if="order.image" :src="order.image" alt="Order Image" class="order-image" />
+              <span v-else>No Image</span>
+            </td>
             <td>
               <div class="status-container">
                 <select
@@ -113,15 +155,21 @@ const getStatusColor = (status) => {
                 <span :class="getStatusColor(order.status)" class="status-circle"></span>
               </div>
             </td>
+            <td>
+              <button class="delete-button" @click="deleteOrder(order._id)">Delete</button>
+            </td>
           </tr>
           <tr v-if="filteredOrders.length === 0">
-            <td colspan="5" class="empty-state">No matching orders found</td>
+            <td colspan="8" class="empty-state">No matching orders found</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 </template>
+  
+
+
 
 <style scoped>
 /* Page container */
@@ -251,5 +299,42 @@ tbody tr:last-child {
 
 .status-circle-completed {
   background-color: #28a745; /* Green */
+}
+
+/* Live Counter Styling */
+.live-counter {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 18px;
+  color: #333;
+}
+
+.live-counter strong {
+  color: #007bff;
+}
+
+/* Delete Button */
+.delete-button {
+  background-color: #ff4d4d;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  font-size: 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #cc0000;
+}
+
+/* Image styling for the table */
+.order-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover; /* Ensures the image retains its aspect ratio */
+  border-radius: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 </style>
