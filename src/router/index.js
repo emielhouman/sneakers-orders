@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import OrdersPage from '../pages/Orders.vue';
 import LoginPage from '../pages/Login.vue';
+import DetailPage from '../pages/OrderDetail.vue';
 import { authState, updateAuthStatus, getRedirectRoute } from '../auth.js';
 
 const routes = [
@@ -19,7 +20,10 @@ const routes = [
     name: 'Login',
     component: LoginPage,
     meta: { requiresAuth: false }
-  }
+  },
+  
+  { path: '/orders/:id', 
+    component: DetailPage, props: true }
 ];
 
 const router = createRouter({
