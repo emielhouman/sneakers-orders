@@ -61,7 +61,9 @@ const getStatusColor = (status) => {
 
 <template>
   <div class="order-page">
-    <h1>Orders</h1>
+    <h1>O R D E R S</h1>
+
+  
 
     <!-- Search and Filter -->
     <div class="filter-search-container">
