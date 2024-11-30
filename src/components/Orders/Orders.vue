@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import Filters from './Orders/Filters.vue';
-import Header from './Orders/Header.vue';
+import Filters from './Filters.vue';
+import Header from './Header.vue';
 import OrderTable from './Ordertable.vue';
 
 const orders = ref([]);
