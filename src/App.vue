@@ -20,7 +20,7 @@ onMounted(() => {
 <template>
   <div>
     <nav>
-      <router-link v-if="authState.isAuth" to="/components/orders"></router-link>
+      <router-link v-if="authState.isAuth" to="/orders"></router-link>
       <router-link v-if="!authState.isAuth" to="/login"></router-link>
     </nav>
     <nav class="navbar">

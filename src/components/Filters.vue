@@ -1,9 +1,22 @@
 <script setup>
-const props = defineProps(['statuses', 'selectedFilter', 'searchQuery']);
-const emit = defineEmits(['update:selectedFilter', 'update:searchQuery']);
+const props = defineProps({
+  statuses: Array,
+  selectedFilter: String,
+  searchQuery: String,
+  onFilterChange: Function,
+  onSearchChange: Function,
+});
 
-const setFilter = (status) => emit('update:selectedFilter', status);
-const setSearchQuery = (event) => emit('update:searchQuery', event.target.value);
+const setFilter = (status) => {
+  console.log('Filter changed to:', status);
+  props.onFilterChange(status);
+};
+
+const setSearchQuery = (event) => {
+  const value = event.target.value;
+  console.log('Search query changed to:', value);
+  props.onSearchChange(value);
+};
 </script>
 
 <template>
@@ -13,8 +26,8 @@ const setSearchQuery = (event) => emit('update:searchQuery', event.target.value)
         v-for="status in ['', ...statuses]"
         :key="status || 'all-orders'"
         :class="{ active: selectedFilter === status }"
-        @click="setFilter(status)"
         class="status-tab"
+        @click="setFilter(status)"
       >
         {{ status || 'All Orders' }}
       </span>
@@ -29,6 +42,7 @@ const setSearchQuery = (event) => emit('update:searchQuery', event.target.value)
   </div>
 </template>
 
+
 <style scoped>
 .filters {
   display: flex;
@@ -38,34 +52,24 @@ const setSearchQuery = (event) => emit('update:searchQuery', event.target.value)
   gap: 20px;
 }
 
-/* Status Filter Styles */
 .status-filter {
   display: flex;
   gap: 20px;
-  font-size: 14px;
-  height: 40px;
-  align-items: center;
-  border-bottom: 2px solid transparent; /* Prevent layout shifts */
 }
 
 .status-tab {
-  color: #888;
   cursor: pointer;
   padding: 0 8px;
-  height: 30px;
-  line-height: 30px;
-  display: inline-block;
-  border-bottom: 2px solid transparent;
+  color: #888;
   transition: color 0.3s ease, border-bottom 0.3s ease;
+  border-bottom: 2px solid transparent;
 }
 
 .status-tab.active {
   color: #007bff;
-  font-weight: bold;
   border-bottom: 2px solid #007bff;
 }
 
-/* Search Input Styles */
 .search-input {
   width: 300px;
   padding: 10px;

@@ -70,7 +70,9 @@ const deleteOrder = (orderId) => {
           <span :class="['status-circle', getStatusColor(order.status)]"></span>
         </td>
         <td>
-          <button class="delete-button" @click="deleteOrder(order._id)">Delete</button>
+          <button @click.stop="deleteOrder(order._id)" class="delete-button">
+    Delete
+  </button>
         </td>
       </tr>
     </tbody>
@@ -86,6 +88,7 @@ const deleteOrder = (orderId) => {
   overflow: hidden;
   background-color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  
 }
 
 .order-table thead {

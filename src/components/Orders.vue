@@ -1,21 +1,21 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
-import Header from './Header.vue';
 import Filters from './Filters.vue';
+import Header from './Header.vue';
 import OrderTable from './Ordertable.vue';
 
-// Shared state
 const orders = ref([]);
+const statuses = ['Pending', 'Shipped', 'Cancelled', 'Completed'];
+const selectedFilter = ref('');
+const searchQuery = ref('');
+
 const totalOrders = computed(() => orders.value.length);
 const totalPrices = computed(() =>
   orders.value.reduce((sum, order) => sum + order.price * order.quantity, 0)
 );
-const searchQuery = ref('');
-const selectedFilter = ref('');
-const statuses = ['Pending', 'Shipped', 'Cancelled', 'Completed'];
 
 // Fetch orders
-const fetchOrders = async () => { 
+const fetchOrders = async () => {
   try {
     const response = await fetch('https://sneakers-api-ouat.onrender.com/api/v1/orders');
     const data = await response.json();
@@ -36,15 +36,12 @@ const fetchOrders = async () => {
 
 onMounted(fetchOrders);
 
-// Filtered orders
 const filteredOrders = computed(() => {
   return orders.value.filter((order) => {
     const matchesSearch =
       order._id.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
       order.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      order.email.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      order.size.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      order.sneaker.toLowerCase().includes(searchQuery.value.toLowerCase());
+      order.email.toLowerCase().includes(searchQuery.value.toLowerCase());
 
     const matchesFilter = !selectedFilter.value || order.status === selectedFilter.value;
 
@@ -52,7 +49,6 @@ const filteredOrders = computed(() => {
   });
 });
 
-// Handlers
 const updateStatus = ({ id, newStatus }) => {
   const order = orders.value.find((order) => order._id === id);
   if (order) order.status = newStatus;
@@ -61,6 +57,17 @@ const updateStatus = ({ id, newStatus }) => {
 const deleteOrder = (orderId) => {
   orders.value = orders.value.filter((order) => order._id !== orderId);
 };
+
+// Callback handlers
+const handleFilterChange = (filter) => {
+  console.log('Selected filter:', filter);
+  selectedFilter.value = filter;
+};
+
+const handleSearchChange = (query) => {
+  console.log('Search query:', query);
+  searchQuery.value = query;
+};
 </script>
 
 <template>
@@ -68,8 +75,10 @@ const deleteOrder = (orderId) => {
     <Header :totalOrders="totalOrders" :totalPrices="totalPrices" />
     <Filters
       :statuses="statuses"
-      :selectedFilter.sync="selectedFilter"
-      :searchQuery.sync="searchQuery"
+      :selectedFilter="selectedFilter"
+      :searchQuery="searchQuery"
+      :onFilterChange="handleFilterChange"
+      :onSearchChange="handleSearchChange"
     />
     <OrderTable
       :orders="filteredOrders"
@@ -78,6 +87,7 @@ const deleteOrder = (orderId) => {
     />
   </div>
 </template>
+
 
 <style scoped>
 /* Page Container */
