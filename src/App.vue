@@ -4,12 +4,13 @@ import { useRouter } from 'vue-router';
 import { authState, updateAuthStatus } from './auth';
 
 const router = useRouter();
-
 const handleUserLogout = () => {
   localStorage.removeItem('authToken');
   updateAuthStatus();
   router.push('/login');
 };
+
+
 
 onMounted(() => {
   updateAuthStatus();
@@ -19,7 +20,7 @@ onMounted(() => {
 <template>
   <div>
     <nav>
-      <router-link v-if="authState.isAuth" to="/orders"></router-link>
+      <router-link v-if="authState.isAuth" to="/components/orders"></router-link>
       <router-link v-if="!authState.isAuth" to="/login"></router-link>
     </nav>
     <nav class="navbar">
