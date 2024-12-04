@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import OrdersPage from '../components/Orders/Orders.vue';
+import OrdersPage from '../pages/Orders.vue';
 import LoginPage from '../pages/Login.vue';
-import DetailPage from '../components/Details/OrderPage.vue';
+import DetailPage from '../pages/OrderPage.vue';
 import { authState, updateAuthStatus, getRedirectRoute } from '../auth.js';
 
 const routes = [

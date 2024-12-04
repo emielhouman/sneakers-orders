@@ -1,12 +1,12 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import Header from './Header.vue';
-import ProductImage from './ProductImage.vue';
-import OrderDetail from './OrderDetail.vue';
-import CustomerDetail from './CustomerDetail.vue';
-import ShippingDetail from './ShippinDetail.vue';
-import PaymentDetail from './paymentDetail.vue';
+import Header from '../components/Details/Header.vue';
+import ProductImage from '../components/Details/ProductImage.vue';
+import OrderDetail from '../components/Details/OrderDetail.vue';
+import CustomerDetail from '../components/Details/CustomerDetail.vue';
+import ShippingDetail from '../components/Details/ShippinDetail.vue';
+import PaymentDetail from '../components/Details/paymentDetail.vue';
 
 const route = useRoute();
 const router = useRouter();
