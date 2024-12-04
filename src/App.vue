@@ -4,12 +4,13 @@ import { useRouter } from 'vue-router';
 import { authState, updateAuthStatus } from './auth';
 
 const router = useRouter();
-
 const handleUserLogout = () => {
   localStorage.removeItem('authToken');
   updateAuthStatus();
   router.push('/login');
 };
+
+
 
 onMounted(() => {
   updateAuthStatus();
