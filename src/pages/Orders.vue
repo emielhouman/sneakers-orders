@@ -2,7 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import Filters from '../components/Orders/Filters.vue';
 import Header from '../components/Orders/Header.vue';
-import OrderTable from '../components/Orders/OrderTable.vue';
+import OrderTable from '../components/Orders/Ordertable.vue';
 
 const orders = ref([]);
 const statuses = ['Pending', 'Shipped', 'Cancelled', 'Completed'];
