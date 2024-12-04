@@ -3,8 +3,13 @@ import { onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { authState, updateAuthStatus } from './auth';
 
+import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/js/all.js';
+
 const router = useRouter();
 const route = useRoute(); // Access the current route
+
+
 
 const handleUserLogout = () => {
   localStorage.removeItem('authToken');

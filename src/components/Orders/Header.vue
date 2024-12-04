@@ -1,14 +1,28 @@
 <script setup>
-const props = defineProps(['totalOrders', 'totalPrices']);
-
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import PasswordChangeModal from './PasswordChangeModal.vue';
 
+const props = defineProps(['totalOrders', 'totalPrices']);
 const router = useRouter();
+
+const isModalVisible = ref(false);
+
+const toggleModal = () => {
+  isModalVisible.value = !isModalVisible.value;
+  console.log('Modal visibility:', isModalVisible.value);
+};
+
+const handlePasswordChange = (newPassword) => {
+  console.log('Password updated:', newPassword);
+  // Perform additional actions if needed
+};
 
 const handleUserLogout = () => {
   localStorage.removeItem('authToken');
   router.push('/login');
 };
+
 </script>
 
 <template>
@@ -21,12 +35,20 @@ const handleUserLogout = () => {
       </div>
     </div>
     <div class="header-right">
+      <!-- Change Password Icon -->
+      <div @click="toggleModal" class="change-password-wrapper">
+  <i class="fa fa-key change-password-icon"></i>
+</div>
       <!-- Logout Button -->
-      <button class="logout-button" @click="handleUserLogout">
-        Logout
-      </button>
+      <button class="logout-button" @click="handleUserLogout">Logout</button>
     </div>
   </header>
+    <!-- Include PasswordChangeModal -->
+    <PasswordChangeModal
+  :isVisible="isModalVisible"
+  @close="toggleModal"
+  @passwordChanged="handlePasswordChange"
+/>
 </template>
 
 <style scoped>
@@ -102,4 +124,27 @@ const handleUserLogout = () => {
   outline: 2px solid #0056b3; /* Blue outline for focus */
   outline-offset: 2px;
 }
+
+.change-password-icon {
+  font-size: 20px;
+  margin-right: 15px;
+  color: #007bff;
+  cursor: pointer; /* Make sure it's clickable */
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.change-password-icon:hover {
+  color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.2); /* Slightly larger */
+}
+.change-password-wrapper {
+  display: inline-block;
+  cursor: pointer;
+}
+.change-password-icon:active {
+  color: #003d80; /* Even darker blue */
+  transform: scale(0.95); /* Slightly smaller */
+}
+
+
 </style>
