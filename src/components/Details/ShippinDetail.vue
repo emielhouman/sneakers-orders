@@ -1,15 +1,16 @@
 <script setup>
 const props = defineProps({
-  shippingAddress: [String, Array],
+  address: Array,
 });
 </script>
 
 <template>
-    <div class="shipping-details">
-      <h2 class="section-title">Shipping Address</h2>
-      <p>{{ shippingAddress || "N/A" }}</p>
-    </div>
-  </template>
+  <div class="shipping-details">
+    <h2 class="section-title">Shipping Address</h2>
+    <p>{{ address.length ? address.join(', ') : "N/A" }}</p>
+  </div>
+</template>
+
 
 <style scoped>
 .shipping-details, .payment-details {

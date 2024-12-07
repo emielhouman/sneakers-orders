@@ -49,7 +49,8 @@ onMounted(fetchOrder);
           <OrderDetail :order="order" />
           <div class="customer-section">
             <CustomerDetail :customer="order" />
-            <ShippingDetail :shippingAddress="order.shippingAddress" />
+            <ShippingDetail :address="order.address" />
+
             <PaymentDetail
               :paymentLast4="order.paymentLast4"
               :paymentExpiry="order.paymentExpiry"
