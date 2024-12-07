@@ -2,6 +2,12 @@
 const props = defineProps(['orders']);
 const emit = defineEmits(['update:status', 'delete-order']);
 
+
+const formatName = (firstname, lastname) => {
+  if (!firstname || !lastname) return "N/A";
+  return `${firstname.charAt(0).toUpperCase()}. ${lastname}`;
+};
+
 // Method to get the color class for the status
 const getStatusColor = (status) => {
   switch (status) {
@@ -51,11 +57,11 @@ const deleteOrder = (orderId) => {
       >
         <td>{{ order._id }}</td>
         <td>{{ order.sneaker }}</td>
-        <td>{{ order.name }}</td>
+        <td>{{ formatName(order.firstname, order.lastname) }}</td>
         <td>{{ order.email }}</td>
-        <td>{{ order.quantity }}</td>
+        <td>{{ order.amount }}</td>
         <td>{{ order.size }}</td>
-        <td>€{{ (order.price * order.quantity).toFixed(2) }}</td>
+        <td>€{{ (order.price * order.amount).toFixed(2) }}</td>
         <td>
           <select
             v-model="order.status"
