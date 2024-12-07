@@ -10,7 +10,7 @@ const props = defineProps({
       <p><strong>First Name:</strong> {{ customer.firstname }}</p>
       <p><strong>Last Name:</strong> {{ customer.lastname }}</p>
       <p><strong>Email:</strong> {{ customer.email }}</p>
-      <p><strong>Phone:</strong> {{ customer.phone }}</p>
+      <p><strong>Phone:</strong> {{ customer.telephone }}</p>
     </div>
   </template>
 
