@@ -6,13 +6,13 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="payment-details">
-      <h2 class="section-title">Payment Method</h2>
-      <p>Visa **** **** **** {{ paymentLast4 || "N/A" }}</p>
-      <p>Expires {{ paymentExpiry || "N/A" }}</p>
-    </div>
-  </template>
-
+  <div class="payment-details">
+    <h2 class="section-title">Payment Method</h2>
+    <!-- Display the last 4 digits of the card and the expiration date -->
+    <p>Visa **** **** **** {{ paymentLast4 || "N/A" }}</p>
+    <p>Expires {{ paymentExpiry || "N/A" }}</p>
+  </div>
+</template>
 <style scoped>
 .shipping-details, .payment-details {
   background-color: #fff;

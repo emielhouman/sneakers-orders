@@ -37,6 +37,17 @@ const deleteOrder = async () => {
   }
 };
 
+const getPaymentDetails = () => {
+  if (order.value && order.value.payment && order.value.payment.length > 0) {
+    const payment = order.value.payment[0]; // Assuming the first payment method is the one to display
+    const paymentLast4 = payment.cardNumber ? payment.cardNumber.slice(-4) : "N/A";
+    const paymentExpiry = payment.expDate || "N/A";
+    return { paymentLast4, paymentExpiry };
+  }
+  return { paymentLast4: "N/A", paymentExpiry: "N/A" };
+};
+
+
 onMounted(fetchOrder);
 </script>
 
@@ -52,9 +63,9 @@ onMounted(fetchOrder);
             <ShippingDetail :address="order.address" />
 
             <PaymentDetail
-              :paymentLast4="order.paymentLast4"
-              :paymentExpiry="order.paymentExpiry"
-            />
+            :paymentLast4="getPaymentDetails().paymentLast4"
+            :paymentExpiry="getPaymentDetails().paymentExpiry"
+          />
           </div>
         </div>
       </div>
