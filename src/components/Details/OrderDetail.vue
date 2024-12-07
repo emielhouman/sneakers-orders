@@ -2,13 +2,27 @@
 const props = defineProps({
   order: Object,
 });
+
+// Functie om datum en tijd op een leesbare manier te formatteren
+const formatDateTime = (dateString) => {
+  if (!dateString) return "N/A";
+  const date = new Date(dateString);
+  return date.toLocaleString('nl-NL', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  });
+};
 </script>
 
 <template>
     <section class="order-section">
       <h2 class="section-title">Order Details</h2>
       <div class="order-info-grid">
-        <p><strong>Order Date:</strong> {{ order.date || "N/A" }}</p>
+        <p><strong>Order Date:</strong> {{ formatDateTime(order.date) }}</p>
         <p><strong>Status:</strong> <span class="status-indicator">{{ order.status }}</span></p>
         <p><strong>Size:</strong> {{ order.size }}</p>
         <p><strong>Quantity:</strong> {{ order.amount }}</p>
