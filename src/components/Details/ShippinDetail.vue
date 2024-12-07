@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-  shippingAddress: String,
+  shippingAddress: [String, Array],
 });
 </script>
 

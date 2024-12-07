@@ -10,10 +10,9 @@ const props = defineProps({
       <div class="order-info-grid">
         <p><strong>Order Date:</strong> {{ order.date || "N/A" }}</p>
         <p><strong>Status:</strong> <span class="status-indicator">{{ order.status }}</span></p>
-        <p><strong>Type:</strong> {{ order.type || "N/A" }}</p>
         <p><strong>Size:</strong> {{ order.size }}</p>
-        <p><strong>Quantity:</strong> {{ order.quantity }}</p>
-        <p><strong>Price:</strong> €{{ (order.price * order.quantity).toFixed(2) }}</p>
+        <p><strong>Quantity:</strong> {{ order.amount }}</p>
+        <p><strong>Price:</strong> €{{ (order.price * order.amount).toFixed(2) }}</p>
       </div>
       <div>
         <p><strong>Sneaker:</strong> {{ order.sneaker }}</p>

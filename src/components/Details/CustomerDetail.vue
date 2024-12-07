@@ -7,8 +7,8 @@ const props = defineProps({
 <template>
     <div class="customer-details">
       <h2 class="section-title">Customer</h2>
-      <p><strong>First Name:</strong> {{ customer.firstName }}</p>
-      <p><strong>Last Name:</strong> {{ customer.lastName }}</p>
+      <p><strong>First Name:</strong> {{ customer.firstname }}</p>
+      <p><strong>Last Name:</strong> {{ customer.lastname }}</p>
       <p><strong>Email:</strong> {{ customer.email }}</p>
       <p><strong>Phone:</strong> {{ customer.phone }}</p>
     </div>
