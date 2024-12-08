@@ -1,21 +1,34 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import PasswordChangeModal from './PasswordChangeModal.vue';
+import resetPasswordIcon from '../../assets/reset-pwd.png';
+import PasswordPopup from './PasswordPopup.vue';
 
-const props = defineProps(['totalOrders', 'totalPrices']);
 const router = useRouter();
+const props = defineProps({totalOrders: Number, totalPrices: Number });
 
-const isModalVisible = ref(false);
+const isPopupVisible = ref(false);
 
-const toggleModal = () => {
-  isModalVisible.value = !isModalVisible.value;
-  console.log('Modal visibility:', isModalVisible.value);
+const togglePopup = () => {
+  isPopupVisible.value = !isPopupVisible.value;
 };
 
-const handlePasswordChange = (newPassword) => {
-  console.log('Password updated:', newPassword);
-  // Perform additional actions if needed
+const handlePasswordUpdate = async (email, newPassword) => {
+  try {
+    const response = await fetch('https://sneakers-api-ouat.onrender.com/api/v1/users/password', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('authToken')}`, // JWT token voor authenticatie
+      },
+      body: JSON.stringify({ user: { email, newPassword } }),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Error updating password:', error);
+  }
 };
 
 const handleUserLogout = () => {
@@ -31,24 +44,24 @@ const handleUserLogout = () => {
       <h1>O R D E R S</h1>
       <div>
         <p>Total Orders: <strong>{{ totalOrders }}</strong></p>
-        <p>Total Prices: <strong>€{{ totalPrices.toFixed(2) }}</strong></p>
+        <p>Total Prices: <strong>€{{ totalPrices }}</strong></p>
       </div>
     </div>
     <div class="header-right">
       <!-- Change Password Icon -->
-      <div @click="toggleModal" class="change-password-wrapper">
-  <i class="fa fa-key change-password-icon"></i>
-</div>
+      <div @click="togglePopup" class="change-pwd-wrapper">
+        <img :src="resetPasswordIcon" alt="Change Password" class="change-pwd-icon" />
+      </div>
       <!-- Logout Button -->
       <button class="logout-button" @click="handleUserLogout">Logout</button>
     </div>
   </header>
-    <!-- Include PasswordChangeModal -->
-    <PasswordChangeModal
-  :isVisible="isModalVisible"
-  @close="toggleModal"
-  @passwordChanged="handlePasswordChange"
-/>
+  <!-- Password Popup -->
+  <PasswordPopup
+  :isVisible="isPopupVisible"
+  @closePopup="togglePopup"
+  @passwordUpdate="handlePasswordUpdate" 
+  />
 </template>
 
 <style scoped>
@@ -60,7 +73,6 @@ const handleUserLogout = () => {
   padding: 18px;
   margin-bottom: 20px;
   color: #1b263b; /* Deep Navy */
-
 }
 
 /* Header Title and Stats */
@@ -125,26 +137,18 @@ const handleUserLogout = () => {
   outline-offset: 2px;
 }
 
-.change-password-icon {
-  font-size: 20px;
-  margin-right: 15px;
-  color: #007bff;
-  cursor: pointer; /* Make sure it's clickable */
-  transition: color 0.3s ease, transform 0.2s ease;
+.header-right {
+  display: flex;
+  gap: 25px;
 }
 
-.change-password-icon:hover {
-  color: #0056b3; /* Darker blue on hover */
-  transform: scale(1.2); /* Slightly larger */
+.change-pwd-icon {
+  width: 35px;
+  height: 35px;
 }
-.change-password-wrapper {
+
+.change-pwd-wrapper {
   display: inline-block;
   cursor: pointer;
 }
-.change-password-icon:active {
-  color: #003d80; /* Even darker blue */
-  transform: scale(0.95); /* Slightly smaller */
-}
-
-
 </style>

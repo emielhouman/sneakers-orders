@@ -1,74 +1,80 @@
 <script setup>
 import { ref } from 'vue';
-const props = defineProps(['isVisible']);
-const emits = defineEmits(['close', 'passwordChanged']);
+import { defineProps, defineEmits } from 'vue';
+import { getEmailFromToken } from '../../auth';
 
+const props = defineProps({ isVisible: Boolean });
+const emits = defineEmits(['closePopup', 'passwordUpdate']);
+
+const email = ref('');
 const newPassword = ref('');
 const confirmPassword = ref('');
 const errorMessage = ref('');
 
-const handlePasswordChange = () => {
+const passwordUpdate = () => {
   if (newPassword.value !== confirmPassword.value) {
-    errorMessage.value = 'Passwords do not match.';
+    errorMessage.value = 'The passwords do not match.';
     return;
   }
-  emits('passwordChanged', newPassword.value);
-  closeModal();
+  email.value = getEmailFromToken();
+  emits('passwordUpdate', email.value, newPassword.value);
+  closePopup();
 };
 
-const closeModal = () => {
-  emits('close');
+const closePopup = () => {
+  emits('closePopup');
 };
 </script>
 
 <template>
-  <div v-if="isVisible" class="modal">
-    <div class="modal-content">
+  <div v-if="isVisible" class="popup__container">
+    <div class="popup__content">
       <div class="modal-header">
         <h2>Change Password</h2>
-        <button class="close-button" @click="closeModal">&times;</button>
+        <button class="close-button" @click="closePopup">&times;</button>
       </div>
       <div class="modal-body">
-        <label for="newPassword">New Password</label>
-        <input id="newPassword" type="password" v-model="newPassword" placeholder="Enter new password" />
+        <label for="password">New Password</label>
+        <input id="password" type="password" v-model="newPassword" placeholder="Enter new password" />
         <label for="confirmPassword">Confirm Password</label>
         <input id="confirmPassword" type="password" v-model="confirmPassword" placeholder="Confirm new password" />
         <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
       </div>
       <div class="modal-footer">
-        <button class="button-primary" @click="handlePasswordChange">Change Password</button>
-        <button class="button-secondary" @click="closeModal">Cancel</button>
+        <button class="button-primary" @click="passwordUpdate">Change Password</button>
+        <button class="button-secondary" @click="closePopup">Cancel</button>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-/* Modal Overlay */
-.modal {
+/* Popup Container */
+.popup__container {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(.15rem);
+  -webkit-backdrop-filter: blur(.15rem);
+  z-index: 999;
 }
 
-/* Modal Content */
-.modal-content {
+/* Popup Content */
+.popup__content {
   background: #fff;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 400px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  border-radius: .5rem;
+  width: 85%;
+  max-width: 35rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 1.5rem;
 }
 
 /* Modal Header */
