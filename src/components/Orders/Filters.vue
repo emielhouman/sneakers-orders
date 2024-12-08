@@ -68,8 +68,8 @@ const setSearchBar = (event) => {
 }
 
 .status-tab.active {
-  color: #007bff;
-  border-bottom: 2px solid #007bff;
+  color: #000;
+  border-bottom: 2px solid #000;
 }
 
 .search-input {

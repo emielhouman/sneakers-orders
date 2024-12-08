@@ -101,8 +101,8 @@ const deleteOrder = (orderId) => {
 }
 
 .order-table thead {
-  background-color: #007bff; /* Deep Navy */
-  color: #fff;
+  background-color: #69FF47; /* Deep Navy */
+  color: #000;
 }
 
 tbody tr {

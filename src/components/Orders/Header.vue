@@ -67,12 +67,15 @@ const handleUserLogout = () => {
 <style scoped>
 /* Header Container */
 .header {
+  background-color: #69FF47; /* Light Navy */
+  border-radius: 5px;
   display: flex;
   justify-content: space-between; /* Space between left and right sections */
   align-items: center; /* Vertically align items */
   padding: 18px;
   margin-bottom: 20px;
   color: #1b263b; /* Deep Navy */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 /* Header Title and Stats */
@@ -80,34 +83,33 @@ const handleUserLogout = () => {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  color: #000;
 }
 
 .header-left h1 {
   font-size: 24px;
   font-weight: bold;
-  color: #007bff; /* Blue accent */
+  color: #000;
   margin: 0;
 }
 
 .live-counters {
   display: flex;
   gap: 20px;
+  
+
 }
 
 .live-counters p {
   margin: 0;
   font-size: 14px;
-  color: #333;
-}
-
-.live-counters strong {
-  color: #1b263b; /* Deep Navy */
+  
 }
 
 /* Logout Button Styling */
 .logout-button {
-  background-color: #6c757d; /* Red background */
-  color: #fff; /* White text */
+  background-color: #000 ; /* Red background */
+  color: #69FF47; /* White text */
   border: none; /* Remove border */
   border-radius: 5px; /* Rounded corners */
   padding: 8px 15px; /* Button padding */

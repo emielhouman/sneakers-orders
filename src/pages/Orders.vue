@@ -106,7 +106,7 @@ const handleFilterChange = (filter) => {
 .orders-page {
   font-family: 'Arial', sans-serif;
   padding: 20px;
-  background-color: #f7f9fc; /* Light background */
+  background-color: #FFF; /* Light background */
   max-width: 100%; /* Full page width */
   height: 100vh; /* Full viewport height */
   box-sizing: border-box; /* Include padding in dimensions */
@@ -118,12 +118,12 @@ h1 {
   text-align: center;
   margin-bottom: 20px;
   font-size: 24px;
-  color: #1b263b; /* Deep Navy */
+  color: #69FF47; /* Deep Navy */
 }
 
 p {
   font-size: 14px;
-  color: #333; /* Neutral text color */
+  color: #69FF47; /* Neutral text color */
 }
 
 
