@@ -92,12 +92,13 @@ const deleteOrder = (orderId) => {
 <style scoped>
 /* Order Table Styles */
 .order-table {
-  width: 100%;
+  width: 98%;
   border-collapse: collapse;
   border-radius: 12px;
   overflow: hidden;
   background-color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-left: 15px;
 }
 
 .order-table thead {
@@ -163,8 +164,8 @@ select {
 
 /* Delete Button */
 .delete-button {
-  background-color: #ff4d4d;
-  color: white;
+  background-color: #69FF47;
+  color: black;
   border: none;
   padding: 8px 12px;
   font-size: 12px;
@@ -174,6 +175,8 @@ select {
 }
 
 .delete-button:hover {
-  background-color: #cc0000; /* Hover effect */
+  background-color: #28a745; /* Hover effect */
 }
+
+
 </style>

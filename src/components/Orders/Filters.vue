@@ -52,6 +52,7 @@ const setSearchBar = (event) => {
   align-items: center;
   margin-bottom: 20px;
   gap: 20px;
+  margin: 20px;
 }
 
 .status-filter {
@@ -80,5 +81,34 @@ const setSearchBar = (event) => {
   font-size: 14px;
   background-color: #fff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .status-filter {
+    justify-content: center;
+  }
+
+  .search-input {
+    max-width: 50%;
+  }
+}
+
+@media (max-width: 480px) {
+  .status-filter {
+    gap: 5px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .status-tab {
+    font-size: 10px;
+    padding: 5px 8px;
+  }
 }
 </style>

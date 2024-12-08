@@ -67,7 +67,6 @@ const handleUserLogout = () => {
 <style scoped>
 /* Header Container */
 .header {
-  background-color: #69FF47; /* Light Navy */
   border-radius: 5px;
   display: flex;
   justify-content: space-between; /* Space between left and right sections */
@@ -108,8 +107,8 @@ const handleUserLogout = () => {
 
 /* Logout Button Styling */
 .logout-button {
-  background-color: #000 ; /* Red background */
-  color: #69FF47; /* White text */
+  background-color: #69FF47 ; /* Red background */
+  color: #000; /* White text */
   border: none; /* Remove border */
   border-radius: 5px; /* Rounded corners */
   padding: 8px 15px; /* Button padding */
@@ -123,13 +122,13 @@ const handleUserLogout = () => {
 
 /* Hover effect */
 .logout-button:hover {
-  background-color: #5a6268; /* Darker red on hover */
+  background-color: #28a745; /* Darker red on hover */
   transform: scale(1.05); /* Slightly larger */
 }
 
 /* Active button effect */
 .logout-button:active {
-  background-color: #495057; /* Even darker red */
+  background-color: #28a745; /* Even darker red */
   transform: scale(0.98); /* Slightly smaller */
 }
 

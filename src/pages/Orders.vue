@@ -105,7 +105,6 @@ const handleFilterChange = (filter) => {
 /* Page Container */
 .orders-page {
   font-family: 'Arial', sans-serif;
-  padding: 20px;
   background-color: #FFF; /* Light background */
   max-width: 100%; /* Full page width */
   height: 100vh; /* Full viewport height */
