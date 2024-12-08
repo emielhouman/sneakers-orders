@@ -118,13 +118,13 @@ input {
 
 input:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #69FF47;
 }
 
 /* Sign In button */
 .login-button {
-  background-color: #007bff;
-  color: #fff;
+  background-color: #69FF47;
+  color: #000;
   border: none;
   border-radius: 5px;
   padding: 10px 15px;

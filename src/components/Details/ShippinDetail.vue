@@ -26,14 +26,5 @@ const props = defineProps({
   color: #555;
 }
 
-button {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 16px;
-  font-weight: 600;
-}
 
-button:hover {
-  background-color: #0056b3;
-}
 </style>
