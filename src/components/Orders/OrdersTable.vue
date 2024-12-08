@@ -1,9 +1,13 @@
 <script setup>
-const props = defineProps(['orders']);
-const emit = defineEmits(['update:status', 'delete-order']);
+import { defineProps, defineEmits } from 'vue';
 
+const props = defineProps({
+  orders: Array,
+});
 
-const formatName = (firstname, lastname) => {
+const emit = defineEmits(['update', 'delete']);
+
+const shortenName = (firstname, lastname) => {
   if (!firstname || !lastname) return "N/A";
   return `${firstname.charAt(0).toUpperCase()}. ${lastname}`;
 };
@@ -25,11 +29,11 @@ const getStatusColor = (status) => {
 };
 
 const updateStatus = (orderId, newStatus) => {
-  emit('update:status', { id: orderId, newStatus });
+  emit('update', { id: orderId, newStatus });
 };
 
 const deleteOrder = (orderId) => {
-  emit('delete-order', orderId);
+  emit('delete', orderId);
 };
 </script>
 
@@ -41,7 +45,7 @@ const deleteOrder = (orderId) => {
         <th>Sneaker</th>
         <th>Name</th>
         <th>Email</th>
-        <th>Quantity</th>
+        <th>Amount</th>
         <th>Size</th>
         <th>Price</th>
         <th>Status</th>
@@ -57,11 +61,11 @@ const deleteOrder = (orderId) => {
       >
         <td>{{ order._id }}</td>
         <td>{{ order.sneaker }}</td>
-        <td>{{ formatName(order.firstname, order.lastname) }}</td>
+        <td>{{ shortenName(order.firstname, order.lastname) }}</td>
         <td>{{ order.email }}</td>
         <td>{{ order.amount }}</td>
         <td>{{ order.size }}</td>
-        <td>€{{ (order.price * order.amount).toFixed(2) }}</td>
+        <td>€{{ (order.price * order.amount) }}</td>
         <td>
           <select
             v-model="order.status"
@@ -77,8 +81,8 @@ const deleteOrder = (orderId) => {
         </td>
         <td>
           <button @click.stop="deleteOrder(order._id)" class="delete-button">
-    Delete
-  </button>
+            Delete
+          </button>
         </td>
       </tr>
     </tbody>
@@ -94,14 +98,12 @@ const deleteOrder = (orderId) => {
   overflow: hidden;
   background-color: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  
 }
 
 .order-table thead {
   background-color: #007bff; /* Deep Navy */
   color: #fff;
 }
-
 
 tbody tr {
   transition: background-color 0.3s ease;

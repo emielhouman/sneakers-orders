@@ -1,10 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import OrdersPage from '../pages/Orders.vue';
-import LoginPage from '../pages/Login.vue';
-import DetailPage from '../pages/OrderPage.vue';
-
-
 import { authState, updateAuthStatus, getRedirectRoute } from '../auth.js';
+import OrdersPage from '../pages/Orders.vue';
+import OrderDetailsPage from '../pages/OrderDetails.vue';
+import LoginPage from '../pages/Login.vue';
 
 const routes = [
   {
@@ -18,33 +16,35 @@ const routes = [
     meta: { requiresAuth: true },
     props: true
   },
+  { 
+    path: '/orders/:id',
+    name: 'Order Details',
+    component: OrderDetailsPage,
+    meta: { requiresAuth: true }, 
+    props: true 
+  },
   {
     path: '/login',
     name: 'Login',
     component: LoginPage,
     meta: { requiresAuth: false }
   },
-  
-  { path: '/orders/:id', 
-    component: DetailPage, props: true },
-
-  
 ];
 
 const router = createRouter({
-  history: createWebHistory(),
   routes,
+  history: createWebHistory(),
 });
 
 router.beforeEach((to, from, next) => {
   updateAuthStatus();
 
   if (to.meta.requiresAuth && !authState.isAuth) {
-    // Redirect not authenticated users to the login page if the route requires authentication
+    // Redirect not authenticated users to the login page if they want to access the orders page
     return next({ name: 'Login' });
   }
   if (to.name === 'Login' && authState.isAuth) {
-    // Redirect authenticated users away from the login page
+    // Redirect authenticated users to the orders page if they want to access the login page
     return next({ name: 'Orders' });
   }
 

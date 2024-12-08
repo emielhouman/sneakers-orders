@@ -2,71 +2,71 @@
 import { ref, computed, onMounted } from 'vue';
 import Filters from '../components/Orders/Filters.vue';
 import Header from '../components/Orders/Header.vue';
-import OrderTable from '../components/Orders/Ordertable.vue';
+import OrdersTable from '../components/Orders/OrdersTable.vue';
 
 const orders = ref([]);
-const statuses = ['Pending', 'Shipped', 'Cancelled', 'Completed'];
 const selectedFilter = ref('');
-const searchQuery = ref('');
+const searchBar = ref('');
+const statuses = ['Pending', 'Shipped', 'Cancelled', 'Completed'];
 
-const totalOrders = computed(() => orders.value.length);
-const totalPrices = computed(() =>
-  orders.value.reduce((sum, order) => sum + order.price * order.quantity, 0)
-);
+const totalOrders = computed(() => orders.value.reduce((sum, order) => sum + order.amount, 0));
+const totalPrices = computed(() => orders.value.reduce((sum, order) => sum + order.amount * order.price, 0));
 
-// Fetch orders
-const fetchOrders = async () => {
+// Get orders from the API
+const getOrders = async () => {
   try {
     const response = await fetch('https://sneakers-api-ouat.onrender.com/api/v1/orders');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     const data = await response.json();
-    orders.value = data.data.orders.map((order) => ({
-      ...order,
-      status: order.status || 'Pending',
-      name: order.name || 'N/A',
-      email: order.email || 'N/A',
-      sneaker: order.sneaker || 'N/A',
-      size: order.size || 'N/A',
-      quantity: order.quantity || 1,
-      price: order.price || 0,
-    }));
+    orders.value = data.data.orders;
   } catch (error) {
     console.error('Error fetching orders:', error);
+    orders.value = [];
   }
 };
 
-onMounted(fetchOrders);
+onMounted(getOrders);
 
 const filteredOrders = computed(() => {
   return orders.value.filter((order) => {
     const matchesSearch =
-      order._id.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      order.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      order.email.toLowerCase().includes(searchQuery.value.toLowerCase());
+      order._id.toLowerCase().includes(searchBar.value.toLowerCase()) ||
+      order.firstname.toLowerCase().includes(searchBar.value.toLowerCase()) ||
+      order.lastname.toLowerCase().includes(searchBar.value.toLowerCase()) ||
+      order.email.toLowerCase().includes(searchBar.value.toLowerCase());
 
     const matchesFilter = !selectedFilter.value || order.status === selectedFilter.value;
-
     return matchesSearch && matchesFilter;
   });
 });
 
-const updateStatus = ({ id, newStatus }) => {
-  const order = orders.value.find((order) => order._id === id);
-  if (order) order.status = newStatus;
+const updateStatus = (orderId) => {
+  orders.value.find((order) => order._id === orderId);
 };
 
-const deleteOrder = (orderId) => {
-  orders.value = orders.value.filter((order) => order._id !== orderId);
-};
-
-// Callback handlers
-const handleFilterChange = (filter) => {
-  console.log('Selected filter:', filter);
-  selectedFilter.value = filter;
+const deleteOrder = async (orderId) => {
+  try {
+    const response = await fetch(`https://sneakers-api-ouat.onrender.com/api/v1/orders/${orderId}`, {
+      method: 'DELETE',
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    // Verwijder de order lokaal als de API-verwijdering succesvol is
+    orders.value = orders.value.filter((order) => order._id !== orderId);
+  } catch (error) {
+    console.error('Error deleting order:', error);
+  }
 };
 
 const handleSearchChange = (query) => {
-  console.log('Search query:', query);
-  searchQuery.value = query;
+  searchBar.value = query;
+};
+
+const handleFilterChange = (filter) => {
+  selectedFilter.value = filter;
 };
 </script>
 
@@ -76,18 +76,17 @@ const handleSearchChange = (query) => {
     <Filters
       :statuses="statuses"
       :selectedFilter="selectedFilter"
-      :searchQuery="searchQuery"
+      :searchBar="searchBar"
       :onFilterChange="handleFilterChange"
       :onSearchChange="handleSearchChange"
     />
-    <OrderTable
+    <OrdersTable
       :orders="filteredOrders"
-      @update:status="updateStatus"
-      @delete-order="deleteOrder"
+      @update="updateStatus"
+      @delete="deleteOrder"
     />
   </div>
 </template>
-
 
 <style scoped>
 /* Page Container */

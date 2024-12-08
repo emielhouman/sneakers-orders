@@ -1,8 +1,10 @@
 <script setup>
+import { defineProps } from 'vue';
+
 const props = defineProps({
   statuses: Array,
   selectedFilter: String,
-  searchQuery: String,
+  searchBar: String,
   onFilterChange: Function,
   onSearchChange: Function,
 });
@@ -12,7 +14,7 @@ const setFilter = (status) => {
   props.onFilterChange(status);
 };
 
-const setSearchQuery = (event) => {
+const setSearchBar = (event) => {
   const value = event.target.value;
   console.log('Search query changed to:', value);
   props.onSearchChange(value);
@@ -34,8 +36,8 @@ const setSearchQuery = (event) => {
     </div>
     <input
       type="text"
-      :value="searchQuery"
-      @input="setSearchQuery"
+      :value="searchBar"
+      @input="setSearchBar"
       placeholder="Search"
       class="search-input"
     />

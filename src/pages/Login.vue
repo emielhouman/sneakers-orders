@@ -3,9 +3,10 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { updateAuthStatus } from '../auth.js';
 
+const router = useRouter();
+
 const email = ref('');
 const password = ref('');
-const router = useRouter();
 
 const handleUserLogin = async () => {
   try {
