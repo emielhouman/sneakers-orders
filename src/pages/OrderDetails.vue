@@ -47,33 +47,34 @@ const getPaymentDetails = () => {
   return { paymentLast4: "N/A", paymentExpiry: "N/A" };
 };
 
-
 onMounted(fetchOrder);
 </script>
 
 <template>
-    <div v-if="order" class="order-detail">
-      <Header :orderId="order._id" :deleteOrder="deleteOrder" />
-      <div class="layout-container">
+  <div v-if="order" class="order-detail">
+    <Header :orderId="order._id" :deleteOrder="deleteOrder" />
+    <div class="details-container">
+      <div class="sneaker-details">
         <ProductImage :imageSrc="order.image" />
-        <div class="details-container">
-          <OrderDetail :order="order" />
-          <div class="customer-section">
-            <CustomerDetail :customer="order" />
-            <ShippingDetail :address="order.address" />
-
-            <PaymentDetail
-            :paymentLast4="getPaymentDetails().paymentLast4"
-            :paymentExpiry="getPaymentDetails().paymentExpiry"
-          />
-          </div>
+        <OrderDetail :order="order" />
+      </div>
+      <div class="customer-shipping-details">
+        <div class="customer-section">
+          <CustomerDetail :customer="order" />
+          <ShippingDetail :address="order.address" />
         </div>
+        <PaymentDetail
+          :paymentLast4="getPaymentDetails().paymentLast4"
+          :paymentExpiry="getPaymentDetails().paymentExpiry"
+        />
       </div>
     </div>
-    <div v-else>
-      <p>Loading order details...</p>
-    </div>
-  </template>
+  </div>
+
+  <div v-else>
+    <p>Loading order details...</p>
+  </div>
+</template>
 
 <style scoped>
 .order-detail {
@@ -82,20 +83,95 @@ onMounted(fetchOrder);
   gap: 20px;
 }
 
-.layout-container {
+.details-container {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.sneaker-details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.customer-shipping-details {
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 20px;
 }
 
 .customer-section {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 20px;
 }
 
 .status-indicator {
   font-weight: 700;
   color: #28a745;
+}
+
+/* Responsiveness */
+@media (max-width: 1200px) {
+  .details-container {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sneaker-details {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-shipping-details {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .order-detail {
+    padding: 15px;
+  }
+
+  .details-container {
+    grid-template-columns: 1fr;
+  }
+
+  .sneaker-details {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-shipping-details {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-detail {
+    padding: 10px;
+  }
+
+  .details-container {
+    grid-template-columns: 1fr;
+  }
+
+  .sneaker-details {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-shipping-details {
+    grid-template-columns: 1fr;
+  }
+
+  .customer-section {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
