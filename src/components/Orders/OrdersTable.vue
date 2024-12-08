@@ -29,7 +29,7 @@ const getStatusColor = (status) => {
 };
 
 const updateStatus = (orderId, newStatus) => {
-  emit('update', { id: orderId, newStatus });
+  emit('update', { orderId, newStatus });
 };
 
 const deleteOrder = (orderId) => {

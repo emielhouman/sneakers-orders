@@ -42,8 +42,21 @@ const filteredOrders = computed(() => {
   });
 });
 
-const updateStatus = (orderId) => {
-  orders.value.find((order) => order._id === orderId);
+const updateStatus = async (order) => {
+  try {
+    const response = await fetch(`https://sneakers-api-ouat.onrender.com/api/v1/orders/${order.orderId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ order: { status: order.newStatus }}),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+  } catch (error) {
+    console.error('Error updating order status:', error);
+  }
 };
 
 const deleteOrder = async (orderId) => {
